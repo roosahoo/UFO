@@ -1,0 +1,17 @@
+[project]
+name = "ufo"
+version = "0.1.0"
+description = "👽"
+readme = "README.md"
+authors = []
+requires-python = ">=3.13"
+dependencies = [
+    "marimo[recommended]>=0.25.2",
+]
+
+[project.scripts]
+ufo = "ufo:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
