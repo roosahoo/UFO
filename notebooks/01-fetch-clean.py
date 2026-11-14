@@ -14,7 +14,18 @@ def _():
 
 
 @app.cell
-def _():
+def _(mo):
+    # Check for cli_args
+
+    if "new" in mo.cli_args():
+        FORCE_NEW = True
+    else:
+        FORCE_NEW = False
+    return (FORCE_NEW,)
+
+
+@app.cell
+def _(FORCE_NEW):
     # Fetch the NUFORC dataset
 
     import pathlib
@@ -27,12 +38,28 @@ def _():
     DATA_RAW_PATH = DATA_DIR / "data_raw.csv"
     DATA_CLEAN_PATH = DATA_DIR / "data_clean.csv"
 
-    if not DATA_RAW_PATH.exists():
+    if not DATA_RAW_PATH.exists() or FORCE_NEW:
         urlretrieve(DATASET_URL, DATA_RAW_PATH)
         print("Success 👽")
     else:
         print("Target already located 🛸")
-    return (DATA_CLEAN_PATH,)
+    return DATA_CLEAN_PATH, DATA_DIR, urlretrieve
+
+
+@app.cell
+def _(DATA_DIR, urlretrieve):
+    # Fetch the dataset for historical US state population
+
+    POPULATION_DATASET_URL = "https://raw.githubusercontent.com/JoshData/historical-state-population-csv/refs/heads/main/historical_state_population_by_year.csv"
+
+    POPULATION_DATA_PATH = DATA_DIR / "population.csv"
+
+    if not POPULATION_DATA_PATH.exists():
+        urlretrieve(POPULATION_DATASET_URL, POPULATION_DATA_PATH)
+        print("Success 🏢")
+    else:
+        print("Population data already exists 🏛️")
+    return
 
 
 @app.cell
@@ -95,9 +122,27 @@ def _(df, mo):
 def _(df_not_null, mo, pl):
     # New dataframe starting from the year 1960
 
-    df_final = df_not_null.filter(
+    df_1960 = df_not_null.filter(
         pl.col("year") >= 1960
     )
+
+    mo.ui.table(df_1960)
+    return (df_1960,)
+
+
+@app.cell
+def _(df_1960, mo, pl):
+    # Remove invalid states
+
+    valid_states = [
+        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    ]
+
+    df_final = df_1960.filter(pl.col("state").is_in(valid_states))
 
     mo.ui.table(df_final)
     return (df_final,)
