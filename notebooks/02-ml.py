@@ -49,13 +49,28 @@ def _(mo, pl, ufo_df):
 
 
 @app.cell
-def _(mo, pop_df, sightings_per_state_year):
+def _(mo, pl, pop_df, sightings_per_state_year):
     # Join the datasets
 
-    joined = sightings_per_state_year.join(
-        pop_df,
-        on = ["state", "year"],
-        how = "left",
+    joined = (
+        pop_df
+        .filter(pl.col("year").is_between(1960, 2021))
+        .join(
+            sightings_per_state_year,
+            on=["state", "year"],
+            how="left",
+            validate="1:1"
+        )
+        .with_columns(
+            pl.col("sightings").fill_null(0)
+        )
+        .with_columns(
+            (
+                pl.col("sightings")
+                / pl.col("population")
+                * 100_000
+            ).alias("sightings_per_100k")
+        )
     )
 
     mo.ui.table(joined)
