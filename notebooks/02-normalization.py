@@ -90,6 +90,18 @@ def _(joined, mo, pl):
     )
 
     mo.ui.table(normalized_df)
+    return (normalized_df,)
+
+
+@app.cell
+def _(normalized_df):
+    import pathlib
+
+    ROOT_DIR = pathlib.Path.cwd()
+    DATA_DIR = pathlib.Path.cwd() / "data"
+    DATA_CLEAN_PATH = DATA_DIR / "sightings_normalized.csv"
+
+    normalized_df.write_csv(DATA_CLEAN_PATH, separator=",")
     return
 
 
