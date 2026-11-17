@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.25.2",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "d490165f5af91ca51acc442e0176b560",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "d1eb7e1fc2d0c58d30cb441711fa800c",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "849966978f964275bbce0d451312e3b5",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "941bc67c5e58909961397e7327e8e571",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "e6b948c79b6f62e01b681072ad12fc1b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "0e06f660e91c2fd79384d73dcb8d4609",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "bab890823341947c3f3a40007e12dea6",
+      "outputs": [],
+      "console": []
+    }
+  ]
+}
