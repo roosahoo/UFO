@@ -1,0 +1,173 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.25.2",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "7a8a11796a826437d8d997dc9f68d203",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='Hbol-0' random-id='73e5cfe9-75a4-607c-07d3-f3da651f20ae'><marimo-anywidget data-initial-value='{&quot;model_id&quot;:&quot;0b74c9598b3740b79529477a8da2d6fd&quot;}' data-label='null' data-model-id='&quot;0b74c9598b3740b79529477a8da2d6fd&quot;'></marimo-anywidget></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "43eacbc40b778d5960a851e600bf25ef",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">(TF-IDF + LSA)</span>\n<span class=\"paragraph\">A wave is only a convincing \"same object\" candidate if the <em>descriptions</em> resemble\neach other too. Only classical methods are used here: TF-IDF, truncated SVD (LSA)\nand cosine similarity.</span>\n<span class=\"paragraph\">For each wave we compute the mean pairwise cosine similarity of its reports and compare\nit to a <strong>null distribution</strong>: random sets of the same size drawn from the same state.\nThe z-score tells how much more alike the wave's reports are than chance.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "01eb7e326659ed6741ddb8e06d7cdfec",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "fbbb56c1ed206a93e70b9d61c20464cf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "90,939 texts; 1,002 waves\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "de0109e5302b3590fd51e9122185add8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "TF-IDF: (90939, 22129) | LSA: (90939, 100) | explained variance: 16.3%\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": "34762bc54c8940b86ab65253a0a5d76a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "0ab36c05d0c1bea4af8bc7607c331d16",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "aa478c8edea8193aaed21842ccafa903",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "d30961e4438ece7bf11d2ddd8c5f17f7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "2fe7b53ec1454732f18ddc63bd02557f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"result\">Result</h2>\n<ul>\n<li>Waves where the reports are more alike than chance (LSA z &gt; 3): <strong>161</strong> of 1,002</li>\n<li>Median z (TF-IDF): <strong>0.68</strong>, median z (LSA): <strong>0.66</strong></li>\n</ul>\n<span class=\"paragraph\">If the median z is clearly above 0, report texts inside waves are more similar than\nrandom same-state reports. Top candidates (waves with \u2265 8 reports):</span></span><marimo-ui-element object-id='RGSE-0' random-id='889d5bed-19b8-a0be-df09-0fb74cc48d7f'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;_marimo_row_id&#92;&quot;:0,&#92;&quot;wave&#92;&quot;:390,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2011-10-31&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2011-11-04&#92;&quot;,&#92;&quot;span_km&#92;&quot;:54.445492529267156,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.625,&#92;&quot;text_z_tfidf&#92;&quot;:2.1904255201253906,&#92;&quot;text_z_lsa&#92;&quot;:4.239137843043338,&#92;&quot;track_rho&#92;&quot;:0.8274127538189437,&#92;&quot;coherence&#92;&quot;:0.7364137843043338,&#92;&quot;mover_score&#92;&quot;:0.6093181572214785,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;lights, florida, color light, groups, sky florida, red color&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:1,&#92;&quot;wave&#92;&quot;:804,&#92;&quot;n&#92;&quot;:9,&#92;&quot;start&#92;&quot;:&#92;&quot;2016-02-16&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2016-02-20&#92;&quot;,&#92;&quot;span_km&#92;&quot;:88.32591640733983,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.5555555555555556,&#92;&quot;text_z_tfidf&#92;&quot;:1.5206502968237967,&#92;&quot;text_z_lsa&#92;&quot;:4.0183662646831815,&#92;&quot;track_rho&#92;&quot;:0.8284591346681658,&#92;&quot;coherence&#92;&quot;:0.679614404246096,&#92;&quot;mover_score&#92;&quot;:0.5630327612497417,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;lights, sight, thought, cluster, set lights, clusters orange&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:2,&#92;&quot;wave&#92;&quot;:284,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2009-07-04&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2009-07-04&#92;&quot;,&#92;&quot;span_km&#92;&quot;:8.31792749202038,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.625,&#92;&quot;text_z_tfidf&#92;&quot;:33.18917663558409,&#92;&quot;text_z_lsa&#92;&quot;:18.060064549271463,&#92;&quot;track_rho&#92;&quot;:0.6890311462822657,&#92;&quot;coherence&#92;&quot;:0.8125,&#92;&quot;mover_score&#92;&quot;:0.5598378063543409,&#92;&quot;explanation&#92;&quot;:&#92;&quot;fireworks (July 4th)&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;red lights, red, lights, diego, san diego, forth&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:3,&#92;&quot;wave&#92;&quot;:666,&#92;&quot;n&#92;&quot;:9,&#92;&quot;start&#92;&quot;:&#92;&quot;2014-07-14&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2014-07-18&#92;&quot;,&#92;&quot;span_km&#92;&quot;:85.22751099983711,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Sphere&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.4444444444444444,&#92;&quot;text_z_tfidf&#92;&quot;:6.2003766956367325,&#92;&quot;text_z_lsa&#92;&quot;:5.803092515188319,&#92;&quot;track_rho&#92;&quot;:0.7746455690028554,&#92;&quot;coherence&#92;&quot;:0.7222222222222222,&#92;&quot;mover_score&#92;&quot;:0.55946624427984,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;south carolina, carolina, sighting report, appear, orange, july&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:4,&#92;&quot;wave&#92;&quot;:890,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2019-05-24&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2019-05-26&#92;&quot;,&#92;&quot;span_km&#92;&quot;:79.94932724692282,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Formation&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.5,&#92;&quot;text_z_tfidf&#92;&quot;:8.0023316943011,&#92;&quot;text_z_lsa&#92;&quot;:7.443277792305802,&#92;&quot;track_rho&#92;&quot;:0.7012195121951219,&#92;&quot;coherence&#92;&quot;:0.75,&#92;&quot;mover_score&#92;&quot;:0.5259146341463414,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;sky perfect, string lights, perfect line, string, line, lights&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:5,&#92;&quot;wave&#92;&quot;:918,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2019-11-21&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2019-11-22&#92;&quot;,&#92;&quot;span_km&#92;&quot;:78.79282130824383,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.625,&#92;&quot;text_z_tfidf&#92;&quot;:7.849497319146577,&#92;&quot;text_z_lsa&#92;&quot;:2.8725485821651024,&#92;&quot;track_rho&#92;&quot;:0.859041213929178,&#92;&quot;coherence&#92;&quot;:0.5997548582165102,&#92;&quot;mover_score&#92;&quot;:0.515214141462233,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;lights, moving formation, multiple lights, formation, multiple, brightest&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:6,&#92;&quot;wave&#92;&quot;:354,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2011-06-27&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2011-07-01&#92;&quot;,&#92;&quot;span_km&#92;&quot;:85.2312896275424,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.625,&#92;&quot;text_z_tfidf&#92;&quot;:4.384952078214304,&#92;&quot;text_z_lsa&#92;&quot;:4.296767314117571,&#92;&quot;track_rho&#92;&quot;:0.6383372009823073,&#92;&quot;coherence&#92;&quot;:0.7421767314117571,&#92;&quot;mover_score&#92;&quot;:0.47375901736357867,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;strange lights, lights, strange, orange, orange light, lights nc&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:7,&#92;&quot;wave&#92;&quot;:234,&#92;&quot;n&#92;&quot;:10,&#92;&quot;start&#92;&quot;:&#92;&quot;2008-06-14&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2008-06-23&#92;&quot;,&#92;&quot;span_km&#92;&quot;:73.29467223128094,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Light&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.3,&#92;&quot;text_z_tfidf&#92;&quot;:3.555714470186317,&#92;&quot;text_z_lsa&#92;&quot;:4.739857974471395,&#92;&quot;track_rho&#92;&quot;:0.7439162686493072,&#92;&quot;coherence&#92;&quot;:0.6239857974471396,&#92;&quot;mover_score&#92;&quot;:0.4641931861270384,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;different objects, ca, sky ca, sky, different, th sky&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:8,&#92;&quot;wave&#92;&quot;:231,&#92;&quot;n&#92;&quot;:9,&#92;&quot;start&#92;&quot;:&#92;&quot;2008-06-14&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2008-06-16&#92;&quot;,&#92;&quot;span_km&#92;&quot;:148.98004342248169,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Fireball&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.4444444444444444,&#92;&quot;text_z_tfidf&#92;&quot;:3.472930543766328,&#92;&quot;text_z_lsa&#92;&quot;:5.465580438442704,&#92;&quot;track_rho&#92;&quot;:0.6218706970438532,&#92;&quot;coherence&#92;&quot;:0.7222222222222222,&#92;&quot;mover_score&#92;&quot;:0.449128836753894,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;fireball, bright, fireball witnessed, bright fireball, fireball sky, ca&#92;&quot;},{&#92;&quot;_marimo_row_id&#92;&quot;:9,&#92;&quot;wave&#92;&quot;:990,&#92;&quot;n&#92;&quot;:8,&#92;&quot;start&#92;&quot;:&#92;&quot;2020-08-16&#92;&quot;,&#92;&quot;end&#92;&quot;:&#92;&quot;2020-08-20&#92;&quot;,&#92;&quot;span_km&#92;&quot;:108.92673789752138,&#92;&quot;top_shape&#92;&quot;:&#92;&quot;Disk&#92;&quot;,&#92;&quot;shape_share&#92;&quot;:0.625,&#92;&quot;text_z_tfidf&#92;&quot;:3.0659441012908184,&#92;&quot;text_z_lsa&#92;&quot;:1.69722149138599,&#92;&quot;track_rho&#92;&quot;:0.8986182904354196,&#92;&quot;coherence&#92;&quot;:0.482222149138599,&#92;&quot;mover_score&#92;&quot;:0.4333336432690218,&#92;&quot;explanation&#92;&quot;:&#92;&quot;unexplained&#92;&quot;,&#92;&quot;top_terms&#92;&quot;:&#92;&quot;middle red, disc, middle, red circle, sky daylight, lights&#92;&quot;}]&quot;' data-total-rows='30' data-total-columns='14' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;wave&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;n&quot;,[&quot;integer&quot;,&quot;i64&quot;]],[&quot;start&quot;,[&quot;date&quot;,&quot;date&quot;]],[&quot;end&quot;,[&quot;date&quot;,&quot;date&quot;]],[&quot;span_km&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;top_shape&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;shape_share&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;text_z_tfidf&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;text_z_lsa&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;track_rho&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;coherence&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;mover_score&quot;,[&quot;number&quot;,&quot;f64&quot;]],[&quot;explanation&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;top_terms&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-selection='&quot;multi&quot;' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='true' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "1ace29f8e898d2c894996d9ec26bef76",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Saved wave_scores.parquet, tfidf.npz, lsa.npy, terms.npy\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    }
+  ]
+}
