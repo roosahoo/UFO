@@ -13,9 +13,10 @@ def _():
     from sklearn.cluster import DBSCAN
     from sklearn.decomposition import PCA
     from scipy.stats import spearmanr
+    import mlflow
 
     DATA_DIR = pathlib.Path.cwd() / "data"
-    return DATA_DIR, DBSCAN, PCA, mo, np, pl, spearmanr
+    return DATA_DIR, DBSCAN, PCA, mlflow, mo, np, pl, spearmanr
 
 
 @app.cell
@@ -98,6 +99,7 @@ def _(
     KM_PER_DAY,
     MIN_SAMPLES,
     find_waves,
+    mlflow,
     pl,
     sightings,
     t_days,
@@ -106,12 +108,68 @@ def _(
 ):
     # Baseline run
 
-    labels = find_waves(x_km, y_km, t_days, EPS, KM_PER_DAY, MIN_SAMPLES)
-    waves_df = sightings.with_columns(pl.Series("wave", labels))
+    # Example sets of configurations for comparing metrics in MLFlow
+    # The first dictionary is the default set of values defined above
+    configurations = [
+        {
+            "EPS": 60.0,
+            "KM_PER_DAY": 20.0,
+            "MIN_SAMPLES": 5
+        },
+        {
+            "EPS": 10.0,
+            "KM_PER_DAY": 35.0,
+            "MIN_SAMPLES": 5
+        },
+        {
+            "EPS": 60.0,
+            "KM_PER_DAY": 20.0,
+            "MIN_SAMPLES": 10
+        },
+        {
+            "EPS": 60.0,
+            "KM_PER_DAY": 20.0,
+            "MIN_SAMPLES": 5
+        },
+        {
+            "EPS": 10.0,
+            "KM_PER_DAY": 20.0,
+            "MIN_SAMPLES": 2
+        },
+        {
+            "EPS": 100.0,
+            "KM_PER_DAY": 5.0,
+            "MIN_SAMPLES": 20
+        },
+    ]
 
-    _in_wave = (labels >= 0).mean()
-    print(f"{_in_wave:.1%} of sightings belong to a wave; "
-          f"{len(set(labels)) - (1 if -1 in labels else 0)} waves")
+    mlflow.set_experiment("UFO Waves")
+
+    i = 1
+    for config in configurations:
+        with mlflow.start_run(run_name=f"DBSCAN Baseline Run {i}"):
+            labels = find_waves(x_km, y_km, t_days, *config.values())
+            waves_df = sightings.with_columns(pl.Series("wave", labels))
+            _in_wave = (labels >= 0).mean()
+    
+            # MLFlow experiment stuff
+            n_waves = len(set(labels)) - (1 if -1 in labels else 0)
+            mlflow.log_params({
+                "eps": EPS,
+                "km_per_day": KM_PER_DAY,
+                "min_samples": MIN_SAMPLES
+            })
+            mlflow.log_metrics({
+                "in_wave": float(_in_wave),
+                "n_waves": n_waves,
+                "n_sightings": len(labels)
+            })
+        
+            print(
+                f"{_in_wave:.1%} of sightings belong to a wave; "
+                f"{len(set(labels)) - (1 if -1 in labels else 0)} waves"
+            )
+        i+=1
     return labels, waves_df
 
 
