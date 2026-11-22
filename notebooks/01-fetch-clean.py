@@ -9,8 +9,8 @@ def _():
     import marimo as mo
     import polars as pl
     import altair as alt
-
-    return mo, pl
+    alt.data_transformers.enable("vegafusion")
+    return alt, mo, pl
 
 
 @app.cell
@@ -114,8 +114,9 @@ def _(df, mo):
 
     df_not_null = df.drop_nulls()
 
+    removed_nulls = len(df) - len(df_not_null)
     mo.ui.table(df_not_null)
-    return (df_not_null,)
+    return df_not_null, removed_nulls
 
 
 @app.cell
@@ -126,8 +127,9 @@ def _(df_not_null, mo, pl):
         pl.col("year") >= 1960
     )
 
+    removed_pre_1960 = len(df_not_null) - len(df_1960)
     mo.ui.table(df_1960)
-    return (df_1960,)
+    return df_1960, removed_pre_1960
 
 
 @app.cell
@@ -142,10 +144,24 @@ def _(df_1960, mo, pl):
         "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     ]
 
-    df_final = df_1960.filter(pl.col("state").is_in(valid_states))
+    df_semifinal = df_1960.filter(pl.col("state").is_in(valid_states))
 
-    mo.ui.table(df_final)
-    return (df_final,)
+    removed_invalid_states = len(df_1960) - len(df_semifinal)
+    mo.ui.table(df_semifinal)
+    return df_semifinal, removed_invalid_states
+
+
+@app.cell
+def _(df_semifinal, pl):
+    # Remove events with invalid hours/minutes
+
+    df_final = df_semifinal.filter(
+        pl.col("hour").is_between(0,23) &
+        pl.col("minute").is_between(0, 59)
+    )
+
+    removed_invalid_times = len(df_semifinal) - len(df_final)
+    return df_final, removed_invalid_times
 
 
 @app.cell
@@ -153,6 +169,140 @@ def _(DATA_CLEAN_PATH, df_final):
     # Write the new dataframe to a CSV
 
     df_final.write_csv(DATA_CLEAN_PATH, separator=",")
+    return
+
+
+@app.cell
+def _(
+    alt,
+    df,
+    pl,
+    removed_invalid_states,
+    removed_invalid_times,
+    removed_nulls,
+    removed_pre_1960,
+):
+    # Visualization of data removed
+
+    removed_total = removed_invalid_states + removed_invalid_times + removed_nulls + removed_pre_1960
+    visualized_total = len(df) - removed_total
+
+    sizes = pl.DataFrame(
+        {
+            "dataset": ["total", "removed"],
+            "size": [visualized_total, removed_total]
+        }
+    )
+
+    alt.Chart(sizes).mark_arc().encode(theta="size", color="dataset").properties(
+        title=alt.TitleParams(
+            text="Data removed from the dataset during cleaning",
+            subtitle=f"Removed: {removed_total}/{len(df)}"
+        )
+    )
+    return
+
+
+@app.cell
+def _(
+    alt,
+    pl,
+    removed_invalid_states,
+    removed_invalid_times,
+    removed_nulls,
+    removed_pre_1960,
+):
+    reasons_for_removal = pl.DataFrame(
+        {
+            "reason": ["null values", "pre-1960", "invalid state", "invalid time"],
+            "number": [removed_nulls, removed_pre_1960, removed_invalid_states, removed_invalid_times]
+        }
+    )
+
+    alt.Chart(reasons_for_removal).mark_bar().encode(
+        y=alt.Y("reason:N", title="Reason for removal"),
+        x=alt.X("number:Q", title="Events removed")
+    )
+    return
+
+
+@app.cell
+def _(alt, df_final):
+    alt.Chart(df_final).transform_calculate(
+        decade="floor(datum.year / 10) * 10"
+    ).transform_aggregate(
+        count="count()",
+        groupby=["decade", "shape"]
+    ).transform_joinaggregate(
+        total="sum(count)",
+        groupby=["decade"]
+    ).transform_calculate(
+        percentage="datum.count / datum.total * 100"
+    ).mark_rect().encode(
+        x=alt.X("decade:O", title="Decade"),
+        y=alt.Y("shape:N", title="Shape"),
+        color=alt.Color("percentage:Q", title="Percentage of sightings"),
+    ).properties(
+        title="Sightings by shape and decade",
+        width=480,
+        height=640
+    )
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    # Why did lights replace the classic disk-shaped UFOs?? 👀🤯⁉️ note to self: investigate‼️
+    """)
+    return
+
+
+@app.cell
+def _(alt, df_final, pl):
+    shape_yearly = (
+        df_final
+        .group_by(["year", "shape"])
+        .agg(pl.len().alias("count"))
+        .with_columns(
+            total=pl.col("count").sum().over("year")
+        )
+        .with_columns(
+            percentage=100 * pl.col("count") / pl.col("total")
+        )
+        .filter(pl.col("shape").is_in(["Disk", "Light"]))
+        .sort("year")
+    )
+    alt.Chart(shape_yearly).mark_line(point=True).encode(
+        x=alt.X("year:Q", title="Year"),
+        y=alt.Y("percentage:Q", title="Percentage of all sightings"),
+        color="shape:N",
+        tooltip=["year", "shape", "count", "percentage"]
+    ).properties(
+        title="Disk vs light sightings over time"
+    )
+    return
+
+
+@app.cell
+def _(mo):
+    mo.md("""
+    ## wtf
+    """)
+    return
+
+
+@app.cell
+def _(alt, df_final):
+    alt.Chart(df_final).transform_aggregate(
+        count="count()",
+        groupby=["year"]
+    ).mark_line().encode(
+        x=alt.X("year", title="Year"),
+        y=alt.Y("count:Q")
+    ).properties(
+        title="Sightings per year"
+    )
     return
 
 
