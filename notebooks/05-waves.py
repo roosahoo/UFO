@@ -13,9 +13,11 @@ def _():
     from sklearn.cluster import DBSCAN
     from sklearn.decomposition import PCA
     from scipy.stats import spearmanr
+    import mlflow
+    import datetime
 
     DATA_DIR = pathlib.Path.cwd() / "data"
-    return DATA_DIR, DBSCAN, PCA, mo, np, pl, spearmanr
+    return DATA_DIR, DBSCAN, PCA, datetime, mlflow, mo, np, pl, spearmanr
 
 
 @app.cell
@@ -109,10 +111,47 @@ def _(
     labels = find_waves(x_km, y_km, t_days, EPS, KM_PER_DAY, MIN_SAMPLES)
     waves_df = sightings.with_columns(pl.Series("wave", labels))
 
-    _in_wave = (labels >= 0).mean()
-    print(f"{_in_wave:.1%} of sightings belong to a wave; "
+    in_wave = float((labels >= 0).mean())
+    n_waves = len(set(labels)) - int(-1 in labels)
+    print(f"{in_wave:.1%} of sightings belong to a wave; "
           f"{len(set(labels)) - (1 if -1 in labels else 0)} waves")
-    return labels, waves_df
+    return in_wave, labels, n_waves, waves_df
+
+
+@app.cell
+def _(mo):
+    # Click to log the experiment results to MLFlow
+
+    log_button = mo.ui.run_button(
+        label="Log to MLflow"
+    )
+
+    log_button
+    return (log_button,)
+
+
+@app.cell
+def _(EPS, MIN_SAMPLES, datetime, in_wave, log_button, mlflow, mo, n_waves):
+    mo.stop(not log_button.value)
+
+    mlflow.set_experiment("DBSCAN Clustering")
+
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+    run_name = f"DBSCAN Baseline Run {timestamp}"
+
+    with mlflow.start_run(run_name=run_name) as run:
+        mlflow.log_params({
+            "eps": EPS,
+            "min_samples": MIN_SAMPLES
+        })
+
+        mlflow.log_metrics({
+            "in_wave": in_wave,
+            "n_waves": n_waves
+        })
+
+    mo.md(f"✅ Logged **{run_name}**")
+    return
 
 
 @app.cell
