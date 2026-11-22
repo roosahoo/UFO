@@ -44,6 +44,13 @@ def _():
     KM_PER_DAY = 20.0      # 1 day counts as this many km (lower = allows longer gaps)
     MIN_SAMPLES = 5        # minimum reports for a wave
     N_PERMUTATIONS = 3     # permutation runs (each is a full DBSCAN)
+
+    # DEFAULTS
+    # YEAR_MIN = 2000        # reporting volume changed drastically with the internet
+    # EPS = 60.0             # neighbourhood radius in the combined km-space
+    # KM_PER_DAY = 20.0      # 1 day counts as this many km (lower = allows longer gaps)
+    # MIN_SAMPLES = 5        # minimum reports for a wave
+    # N_PERMUTATIONS = 3     # permutation runs (each is a full DBSCAN)
     return EPS, KM_PER_DAY, MIN_SAMPLES, N_PERMUTATIONS, YEAR_MIN
 
 
@@ -131,7 +138,21 @@ def _(mo):
 
 
 @app.cell
-def _(EPS, MIN_SAMPLES, datetime, in_wave, log_button, mlflow, mo, n_waves):
+def _(
+    EPS,
+    KM_PER_DAY,
+    MIN_SAMPLES,
+    YEAR_MIN,
+    candidates,
+    datetime,
+    in_wave,
+    labels,
+    log_button,
+    mlflow,
+    mo,
+    n_waves,
+    np,
+):
     mo.stop(not log_button.value)
 
     mlflow.set_experiment("DBSCAN Clustering")
@@ -139,18 +160,35 @@ def _(EPS, MIN_SAMPLES, datetime, in_wave, log_button, mlflow, mo, n_waves):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H-%M-%S")
     run_name = f"DBSCAN Baseline Run {timestamp}"
 
-    with mlflow.start_run(run_name=run_name) as run:
+    wave_sizes = np.bincount(labels[labels >= 0])
+
+    metrics = {
+        "in_wave": in_wave,
+        "n_waves": n_waves,
+        "largest_wave": int(wave_sizes.max()) if wave_sizes.size else 0,
+        "median_wave_size": float(np.median(wave_sizes)) if wave_sizes.size else 0,
+        "chained_share": float(candidates["chained"].mean()) if candidates.height else 0,
+        "track_candidates": int(candidates["track_candidate"].sum()),
+    }
+
+    for column in ["track_rho", "duration_days", "span_km"]:
+        values = candidates[column].drop_nulls().to_numpy()
+        values = values[np.isfinite(values)]
+
+        if values.size:
+            metrics[f"median_{column}"] = float(np.median(values))
+
+    with mlflow.start_run(run_name=run_name):
         mlflow.log_params({
             "eps": EPS,
-            "min_samples": MIN_SAMPLES
+            "km_per_day": KM_PER_DAY,
+            "min_samples": MIN_SAMPLES,
+            "year_min": YEAR_MIN,
         })
 
-        mlflow.log_metrics({
-            "in_wave": in_wave,
-            "n_waves": n_waves
-        })
+        mlflow.log_metrics(metrics)
 
-    mo.md(f"✅ Logged **{run_name}**")
+    mo.md(f"Logged: {run_name}")
     return
 
 
