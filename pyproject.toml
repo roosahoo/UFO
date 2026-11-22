@@ -8,6 +8,8 @@ requires-python = ">=3.13"
 dependencies = [
     "marimo[recommended]>=0.25.2",
     "scikit-learn>=1.9.1",
+    "vegafusion>=2.0.3",
+    "vl-convert-python>=1.9.0.post1",
 ]
 
 [project.scripts]
