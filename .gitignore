@@ -2,3 +2,4 @@ __pycache__/
 .venv/
 .marimo/
 __marimo__/
+mlflow.db
