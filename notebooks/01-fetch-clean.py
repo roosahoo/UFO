@@ -142,9 +142,20 @@ def _(df_1960, mo, pl):
         "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     ]
 
-    df_final = df_1960.filter(pl.col("state").is_in(valid_states))
+    df_semifinal = df_1960.filter(pl.col("state").is_in(valid_states))
 
-    mo.ui.table(df_final)
+    mo.ui.table(df_semifinal)
+    return (df_semifinal,)
+
+
+@app.cell
+def _(df_semifinal, pl):
+    # Remove events with invalid hours/minutes
+
+    df_final = df_semifinal.filter(
+        pl.col("hour").is_between(0,23) &
+        pl.col("minute").is_between(0, 59)
+    )
     return (df_final,)
 
 
