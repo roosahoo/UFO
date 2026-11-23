@@ -251,14 +251,6 @@ def _(alt, df_final):
 
 
 @app.cell
-def _(mo):
-    mo.md("""
-    # Why did lights replace the classic disk-shaped UFOs?? 👀🤯⁉️ note to self: investigate‼️
-    """)
-    return
-
-
-@app.cell
 def _(alt, df_final, pl):
     shape_yearly = (
         df_final
